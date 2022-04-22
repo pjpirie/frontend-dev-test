@@ -1,75 +1,57 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useEffect, useState, useContext } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import TuneIcon from "@material-ui/icons/Tune";
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import PulseLoader from "react-spinners/PulseLoader";
-import { bindActionCreators } from "redux";
-import { fetchCatData } from "./API/fetchData";
-// import PetsIcon from "@material-ui/icons/Pets";
-
-// import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
-// import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
+import { Route, Routes, Link, useLocation } from "react-router-dom";
+import PetsIcon from "@material-ui/icons/Pets";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import PhotoIcon from "@material-ui/icons/Photo";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+import { getFavorites } from "./API/favourites";
+import { getCatData } from "./API/search";
 import { AppContainer, AppHeader, AppMain, Button } from "./Styled/Components";
-import CardComponent from "./Components/CardComponent";
-import CardControls from "./Components/CardControls";
-import "./global.css";
-import { CatState, setCat } from "./state/slice/catSlice";
-import { Cat } from "./state/store";
+import { CatState, setCats } from "./state/slice/catSlice";
+import { Cats, User, Fav } from "./state/store";
 import MainView from "./Views/Main.view";
 import NavComponent from "./Components/NavComponent";
 import FavView from "./Views/Fav.view";
+import "./global.css";
+import { setFavs } from "./state/slice/favSlice";
+import HeaderComponent from "./Components/HeaderComponent";
+import AccountView from "./Views/Account.view";
 
 function App() {
-	const catData: CatState = useSelector(Cat);
+	const catData = useSelector(Cats);
 	const dispatch = useDispatch();
-	const [loading, setLoading] = useState(true);
+	const userID = useSelector(User).uuid;
+	const favourites = useSelector(Fav);
+	const [isLoading, setLoading] = useState(true);
+	const [catPage, setCatPage] = useState(0);
+	const location = useLocation().pathname;
+
+	const Initialise = useCallback(async () => {
+		const data: CatState[] = await getCatData(catPage);
+		dispatch(setCats(data));
+		setLoading(false);
+		const favData = await getFavorites(userID);
+		dispatch(setFavs(favData));
+	}, [catPage, dispatch, userID]);
 
 	useEffect(() => {
-		(async () => {
-			const data = await fetchCatData();
-			dispatch(setCat(data[0]));
-			setLoading(false);
-		})();
-	}, []);
+		Initialise();
+	}, [Initialise]);
 
-	const getNewCat = async () => {
-		const data = await fetchCatData();
-		dispatch(setCat(data[0]));
-	};
-
-	// console.log(catData);
 	return (
-		<Router>
-			<AppContainer>
-				<AppHeader>
-					<Button>
-						<Link to="/">
-							<TuneIcon />
-						</Link>
-						<Link to="/fav">
-							<TuneIcon />
-						</Link>
-					</Button>
-				</AppHeader>
-				<AppMain>
-					<Routes>
-						<Route
-							path="/"
-							element={
-								<MainView
-									catData={catData}
-									getNewCat={getNewCat}
-									loading={loading}
-								/>
-							}
-						/>
-						<Route path="/fav" element={<FavView />} />
-					</Routes>
-					<NavComponent />
-				</AppMain>
-			</AppContainer>
-		</Router>
+		<AppContainer>
+			<HeaderComponent />
+			<AppMain>
+				<Routes>
+					<Route path="/" element={<MainView />} />
+					<Route path="/fav" element={<FavView />} />
+					<Route path="/upload" element={<AccountView />} />
+				</Routes>
+				<NavComponent />
+			</AppMain>
+		</AppContainer>
 	);
 }
 
