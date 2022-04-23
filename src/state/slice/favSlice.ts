@@ -17,6 +17,7 @@ export const favSlice = createSlice({
 				},
 				image_id: "Default",
 				id: "Default",
+				created_at: "Default",
 			},
 		],
 	},

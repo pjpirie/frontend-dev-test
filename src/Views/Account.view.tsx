@@ -12,6 +12,7 @@ function AccountView() {
 	const [catData, setCatData] = useState([]);
 	const userID = useSelector(User).uuid;
 	const [loading, setLoading] = useState(true);
+
 	useEffect(() => {
 		(async () => {
 			const data = await getAccountCatData(userID);
@@ -21,7 +22,7 @@ function AccountView() {
 	}, [userID]);
 
 	if (loading) return <PulseLoader />;
-	if (catData.length < 1) return <h1>No Cats :C</h1>;
+	if (catData.length < 1) return <h1>You haven&apos;t uploaded any cats :C</h1>;
 	return (
 		<>
 			{catData.map((data: CatState) => {

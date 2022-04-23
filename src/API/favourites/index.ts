@@ -7,6 +7,7 @@ export interface FavoriteType {
 	image: FavoriteImage;
 	image_id: string;
 	isFav?: boolean;
+	created_at: string;
 }
 
 /**
@@ -45,7 +46,22 @@ export const addFavorite = async (catID: string, userID: string) => {
 		.then((res) => res.json())
 		.catch((err) => new Error(err));
 
-	return req;
+	const favData = await fetch(
+		`https://api.thecatapi.com/v1/favourites/${req.id}`,
+		{
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				"x-api-key":
+					import.meta.env.VITE_API_KEY ||
+					"4a989167-9038-43f6-89c7-9fb0956bd2ab",
+			},
+		},
+	)
+		.then((res) => res.json())
+		.catch((err) => new Error(err));
+
+	return favData;
 };
 
 /**

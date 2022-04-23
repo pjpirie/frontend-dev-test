@@ -1,8 +1,10 @@
 import { useSelector } from "react-redux";
+
 import CardComponent from "../Components/CardComponent";
 import CardControls from "../Components/CardControls";
-import { Cats } from "../state/store";
+// import FeedComponent from "../Components/FeedComponent";
 import { CatState } from "../state/slice/catSlice";
+import { Cats } from "../state/store";
 import { FeedCard } from "../Styled/Components";
 
 function MainView() {
@@ -18,6 +20,7 @@ function MainView() {
 							<CardComponent url={url} id={id} />
 							<CardControls id={id} voteVal={voteVal} />
 						</FeedCard>
+						// <FeedComponent url={url} id={id} voteVal={voteVal} />
 					);
 				})}
 			</>

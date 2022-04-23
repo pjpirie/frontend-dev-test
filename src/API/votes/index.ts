@@ -46,7 +46,7 @@ export const getVote = async () => {
  * @throws throws an error if the request fails
  * @returns Object{voteID: string, message: string}
  */
-export const submitVote = (
+export const submitVote = async (
 	catID: string,
 	voteValue: number,
 	userID: string,
@@ -64,7 +64,7 @@ export const submitVote = (
 		);
 
 	// API Request
-	fetch(`https://api.thecatapi.com/v1/votes`, {
+	const data = await fetch(`https://api.thecatapi.com/v1/votes`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -79,4 +79,6 @@ export const submitVote = (
 	})
 		.then((res) => res.json())
 		.catch((err) => new Error(err));
+
+	return data;
 };
