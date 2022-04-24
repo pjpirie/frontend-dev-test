@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
@@ -26,6 +27,7 @@ function CardControls({ id, voteVal, accountCatData }: ControlProps) {
 	const userData = useSelector(User);
 	const dispatch = useDispatch();
 	const location: string = useLocation().pathname;
+	const [requestPending, setRequestPending] = useState(false);
 	/**
 	 *	The following is to remove the "no-unused-vars" on the custom hook that
 	 *	returns reference to overlay state and setState.
@@ -62,6 +64,8 @@ function CardControls({ id, voteVal, accountCatData }: ControlProps) {
 	};
 
 	const handleVote = async (val: number) => {
+		if (requestPending) return;
+		setRequestPending(true);
 		if (id === (null || undefined) || val === (null || undefined)) {
 			throw new Error(
 				"Voting Requires 2 Parameters: image_id: string, voteValue: number",
@@ -80,6 +84,8 @@ function CardControls({ id, voteVal, accountCatData }: ControlProps) {
 					duration: 2000,
 				}),
 			);
+
+			setRequestPending(false);
 			return;
 		}
 		if (data.message === "VOTE_CHANGED") {
@@ -92,6 +98,7 @@ function CardControls({ id, voteVal, accountCatData }: ControlProps) {
 				}),
 			);
 			setOverlay(val > 0 ? OverlayType.UPVOTE : OverlayType.DOWNVOTE, 2000);
+			setRequestPending(false);
 			return;
 		}
 		if (data.message === "VOTE_EXISTS") {
@@ -103,6 +110,7 @@ function CardControls({ id, voteVal, accountCatData }: ControlProps) {
 				}),
 			);
 			setOverlay(OverlayType.WARNING, 3000);
+			setRequestPending(false);
 			return;
 		}
 		dispatch(
@@ -113,6 +121,7 @@ function CardControls({ id, voteVal, accountCatData }: ControlProps) {
 			}),
 		);
 		setOverlay(OverlayType.ERROR, 3000);
+		setRequestPending(false);
 	};
 
 	return (

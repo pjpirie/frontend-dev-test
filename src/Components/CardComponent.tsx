@@ -41,7 +41,11 @@ export default function CardComponent(props: CardProps) {
 	);
 	const location = useLocation().pathname.split("/")[1];
 
+	const [requestPending, setRequestPending] = useState(false);
+
 	const handleFavorite = async () => {
+		if (requestPending) return;
+		setRequestPending(true);
 		if (isFavorite) {
 			const data: any = await removeFavorite(favoriteId);
 			setFavorite(false);
@@ -69,6 +73,7 @@ export default function CardComponent(props: CardProps) {
 				);
 				setFavorite(true);
 			}
+			setRequestPending(false);
 			return;
 		}
 		const data = await addFavorite(id, userData.uuid);
@@ -95,6 +100,7 @@ export default function CardComponent(props: CardProps) {
 			);
 		}
 		setOverlay(OverlayType.FAVOURITE, 2000);
+		setRequestPending(false);
 	};
 
 	return (
