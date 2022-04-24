@@ -349,6 +349,7 @@ export const OverlayContainer = styled.div`
  * */
 
 export const ScrollbarContainer = styled.div`
+	display: none;
 	position: fixed;
 	width: 4px;
 	height: 100%;

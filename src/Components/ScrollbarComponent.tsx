@@ -1,8 +1,10 @@
 import { useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { ScrollbarContainer } from "../Styled/Components";
 
 export default function CustomScrollbar() {
 	const scrollbarRef = useRef<any>(null);
+	const location = useLocation().pathname;
 
 	useEffect(() => {
 		// Setup
@@ -12,6 +14,7 @@ export default function CustomScrollbar() {
 		);
 		// Get Scrollbar element
 		const scrollbarElement = scrollbarRef.current;
+		const scrollContainerEl: any = document.querySelector("#scrollContainer");
 
 		const resizeEvent = () => {
 			totalHeight = document.body.scrollHeight - window.innerHeight;
@@ -19,7 +22,8 @@ export default function CustomScrollbar() {
 		const scrollEvent = () => {
 			// Get DOM elements
 			const headerEl: any = document.querySelector("#headerComponent");
-			const scrollContainerEl: any = document.querySelector("#scrollContainer");
+			if (scrollContainerEl.style.display === "none")
+				scrollContainerEl.style.display = "block";
 
 			// Calculate the height of the scrollable document outside the viewport
 			totalHeight = document.body.scrollHeight - window.innerHeight;
@@ -54,18 +58,23 @@ export default function CustomScrollbar() {
 			}
 		};
 
-		window.addEventListener("resize", resizeEvent);
-		window.addEventListener("scroll", scrollEvent);
+		if (document.body.scrollHeight <= window.innerHeight) {
+			scrollContainerEl.style.display = "none";
+		}
+		if (document.body.scrollHeight > window.innerHeight) {
+			window.addEventListener("resize", resizeEvent);
+			window.addEventListener("scroll", scrollEvent);
+		}
 
 		// Teardown
 		return () => {
 			window.removeEventListener("resize", resizeEvent);
 			window.removeEventListener("scroll", scrollEvent);
 		};
-	}, []);
+	}, [location]);
 
 	return (
-		<ScrollbarContainer id="scrollContainer">
+		<ScrollbarContainer id="scrollContainer" style={{ display: "none" }}>
 			<div ref={scrollbarRef} id="scrollbar" />;
 		</ScrollbarContainer>
 	);
