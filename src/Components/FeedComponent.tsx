@@ -12,7 +12,6 @@ interface CardProps {
 
 export default function FeedComponent(props: CardProps) {
 	const { url, id, voteVal, date } = props;
-	console.log(props);
 	return (
 		<FeedCard key={id}>
 			<CardComponent url={url} id={id} />

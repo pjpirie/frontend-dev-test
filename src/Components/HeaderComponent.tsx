@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, NavLink } from "react-router-dom";
 import PetsIcon from "@material-ui/icons/Pets";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import PhotoIcon from "@material-ui/icons/Photo";
@@ -46,35 +46,38 @@ function HeaderComponent() {
 			);
 		}
 	};
+
+	const getActiveLink = (url: string) => {
+		if (url === location) return "active";
+		return "";
+	};
 	return (
-		<AppHeader>
-			<Button className="reset">
-				<Link to="/">
-					<PetsIcon />
-				</Link>
-			</Button>
-			<Button className="reset">
+		<AppHeader id="headerComponent">
+			<input
+				type="file"
+				style={{ display: "none" }}
+				onChange={handleUpload}
+				accept="image/jpeg, image/png"
+				ref={fileInput}
+			/>
+			<Button className={`reset ${getActiveLink("/upload")}`}>
 				{location === "/upload" ? (
-					<>
-						<input
-							type="file"
-							style={{ display: "none" }}
-							onChange={handleUpload}
-							accept="image/jpeg, image/png"
-							ref={fileInput}
-						/>
-						<AddCircleIcon onClick={() => handleClick(fileInput)} />
-					</>
+					<AddCircleIcon onClick={() => handleClick(fileInput)} />
 				) : (
-					<Link to="/upload">
+					<NavLink to="/upload">
 						<PhotoIcon />
-					</Link>
+					</NavLink>
 				)}
 			</Button>
-			<Button className="reset">
-				<Link to="/fav">
+			<Button className={`reset ${getActiveLink("/")}`}>
+				<NavLink to="/">
+					<PetsIcon />
+				</NavLink>
+			</Button>
+			<Button className={`reset ${getActiveLink("/fav")}`}>
+				<NavLink to="/fav">
 					<FavoriteIcon />
-				</Link>
+				</NavLink>
 			</Button>
 		</AppHeader>
 	);

@@ -35,7 +35,6 @@ export default function CardComponent(props: CardProps) {
 	const [isActive, setActive] = useState(false);
 
 	const handleFavorite = async () => {
-		console.log("Fav");
 		if (isFavorite) {
 			await removeFavorite(favId);
 			setFavorite(false);

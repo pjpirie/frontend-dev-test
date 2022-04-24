@@ -16,6 +16,7 @@ import { AppContainer, AppMain } from "./Styled/Components";
 import AccountView from "./Views/Account.view";
 import FavView from "./Views/Fav.view";
 import MainView from "./Views/Main.view";
+import CustomScrollbar from "./Components/ScrollbarComponent";
 
 function App() {
 	const dispatch = useDispatch();
@@ -35,6 +36,7 @@ function App() {
 
 	return (
 		<AppContainer>
+			<CustomScrollbar />
 			<HeaderComponent />
 			<AppMain>
 				<ToastComponent />
