@@ -23,6 +23,7 @@ interface ControlProps {
 }
 
 function CardControls({ id, voteVal, accountCatData }: ControlProps) {
+	// console.log({ id, voteVal });
 	const userData = useSelector(User);
 	const dispatch = useDispatch();
 	const location: string = useLocation().pathname;

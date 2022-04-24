@@ -15,15 +15,21 @@ export interface VoteData {
  * @throws throws an error if the request fails
  * @returns Promise<VoteData[]>
  */
-export const getVote = async () => {
-	const req: VoteData[] = await fetch(`https://api.thecatapi.com/v1/votes`, {
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-			"x-api-key":
-				import.meta.env.VITE_API_KEY || "4a989167-9038-43f6-89c7-9fb0956bd2ab",
+export const getVote = async (subID: string | undefined = undefined) => {
+	const req: VoteData[] = await fetch(
+		`https://api.thecatapi.com/v1/votes${
+			subID !== undefined ? `?sub_id=${subID}` : ""
+		}`,
+		{
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				"x-api-key":
+					import.meta.env.VITE_API_KEY ||
+					"4a989167-9038-43f6-89c7-9fb0956bd2ab",
+			},
 		},
-	})
+	)
 		.then((res) => res.json())
 		.catch((err) => new Error(err));
 
@@ -61,7 +67,7 @@ export const submitVote = async (
 		throw new Error(
 			"voteValue must be between 0 or 1, 0 = down vote, 1 = up vote",
 		);
-	const votes = await getVote();
+	const votes = await getVote(userID);
 	const targetVote = votes.filter((item) => {
 		if (item.image_id === catID) {
 			if (item.sub_id === userID && item.value === voteValue) {

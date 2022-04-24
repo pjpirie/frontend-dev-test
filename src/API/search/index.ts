@@ -60,7 +60,7 @@ export const getCatData = async (pageNumber: number = 0) => {
  */
 export const getAccountCatData = async (userID: string) => {
 	const resData: CatState[] = await fetch(
-		`https://api.thecatapi.com/v1/images?sub_id${userID}&limit=50&order=desc`,
+		`https://api.thecatapi.com/v1/images?sub_id=${userID}&limit=50&order=desc`,
 		{
 			method: "GET",
 			headers: {
