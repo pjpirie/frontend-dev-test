@@ -1,28 +1,24 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useLocation, NavLink } from "react-router-dom";
 import PetsIcon from "@material-ui/icons/Pets";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import PhotoIcon from "@material-ui/icons/Photo";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
-import { DOMElement, useRef } from "react";
+import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppContainer, AppHeader, AppMain, Button } from "../Styled/Components";
-import { uploadCat } from "../API/upload";
+import { AppHeader, Button } from "../Styled/Components";
+import { uploadCat, UploadResponce } from "../API/upload";
 import { User } from "../state/store";
 import { setToast } from "../state/slice/toastSlice";
 import ToastType from "./toast/toastTypes";
 
 function HeaderComponent() {
-	const userID = useSelector(User).uuid;
-	const location = useLocation().pathname;
+	const userID: string = useSelector(User).uuid;
+	const location: string = useLocation().pathname;
 	const fileInput = useRef<HTMLInputElement>(null);
 	const dispatch = useDispatch();
 
 	const handleClick = (inputElement: any) => {
 		inputElement.current.click();
-		// dispatch(
-		// 	setToast({ type: "Error", message: "Uploading is not yet implemented" }),
-		// );
 	};
 
 	const handleUpload = async (e: any) => {
@@ -39,7 +35,7 @@ function HeaderComponent() {
 			return;
 		}
 		dispatch(setToast({ type: ToastType.INFO, message: "Uploading File." }));
-		const upload = await uploadCat(userID, file);
+		const upload: UploadResponce = await uploadCat(userID, file);
 		if (upload.id !== undefined) {
 			dispatch(
 				setToast({ type: ToastType.SUCCESS, message: "Upload successful." }),

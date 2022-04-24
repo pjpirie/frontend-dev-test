@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 export interface VoteData {
 	id: string;
 	image_id: string;
@@ -62,6 +61,16 @@ export const submitVote = async (
 		throw new Error(
 			"voteValue must be between 0 or 1, 0 = down vote, 1 = up vote",
 		);
+	const votes = await getVote();
+	const targetVote = votes.filter((item) => {
+		if (item.image_id === catID) {
+			if (item.sub_id === userID && item.value === voteValue) {
+				return true;
+			}
+		}
+		return false;
+	});
+	if (targetVote.length > 0) return { message: "VOTE_EXISTS" };
 
 	// API Request
 	const data = await fetch(`https://api.thecatapi.com/v1/votes`, {

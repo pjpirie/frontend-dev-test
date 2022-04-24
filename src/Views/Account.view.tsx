@@ -1,15 +1,13 @@
 import PulseLoader from "react-spinners/PulseLoader";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import CardComponent from "../Components/CardComponent";
-import CardControls from "../Components/CardControls";
 import { User } from "../state/store";
 import { CatState } from "../state/slice/catSlice";
-import { FeedCard } from "../Styled/Components";
 import { getAccountCatData } from "../API/search";
+import FeedComponent from "../Components/FeedComponent";
 
 function AccountView() {
-	const [catData, setCatData] = useState([]);
+	const [catData, setCatData] = useState<CatState[]>([]);
 	const userID = useSelector(User).uuid;
 	const [loading, setLoading] = useState(true);
 
@@ -28,15 +26,17 @@ function AccountView() {
 			{catData.map((data: CatState) => {
 				const { url, id, voteVal } = data;
 				return (
-					<FeedCard key={id}>
-						<CardComponent url={url} id={id} />
-						<CardControls id={id} voteVal={voteVal} />
-					</FeedCard>
+					<FeedComponent
+						key={id}
+						url={url}
+						id={id}
+						voteVal={voteVal}
+						accountCatData={{ catData, setCatData }}
+					/>
 				);
 			})}
 		</>
 	);
 }
-// return <h1>No Cats :C</h1>;
 
 export default AccountView;

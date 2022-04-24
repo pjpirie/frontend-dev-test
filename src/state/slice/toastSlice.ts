@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import ToastType from "../../Components/toast/toastTypes";
 
-/* eslint-disable no-param-reassign */
 export interface ToastState {
 	type: ToastType;
 	message: string;

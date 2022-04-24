@@ -1,34 +1,26 @@
 import "./global.css";
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useCallback, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 
-import { getFavorites } from "./API/favourites";
 import { getCatData } from "./API/search";
 import HeaderComponent from "./Components/HeaderComponent";
+import CustomScrollbar from "./Components/ScrollbarComponent";
 import ToastComponent from "./Components/toast/ToastComponent";
 import { CatState, setCats } from "./state/slice/catSlice";
-import { setFavs } from "./state/slice/favSlice";
-import { User } from "./state/store";
 import { AppContainer, AppMain } from "./Styled/Components";
 import AccountView from "./Views/Account.view";
 import FavView from "./Views/Fav.view";
 import MainView from "./Views/Main.view";
-import CustomScrollbar from "./Components/ScrollbarComponent";
 
 function App() {
 	const dispatch = useDispatch();
-	const userID = useSelector(User).uuid;
-	const [catPage, setCatPage] = useState(0);
 
 	const Initialise = useCallback(async () => {
-		const data: CatState[] = await getCatData(catPage);
+		const data: CatState[] = await getCatData();
 		dispatch(setCats(data));
-		const favData = await getFavorites(userID);
-		dispatch(setFavs(favData));
-	}, [catPage, dispatch, userID]);
+	}, [dispatch]);
 
 	useEffect(() => {
 		Initialise();

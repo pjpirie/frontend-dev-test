@@ -1,4 +1,9 @@
-/* eslint-disable import/prefer-default-export */
+export interface UploadResponce {
+	id: string;
+	sub_id: string;
+	url: string;
+}
+
 /**
  * @author: Paul Pirie
  * @async

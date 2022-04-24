@@ -1,38 +1,46 @@
-// import { useEffect, useState } from "react";
-// import { useSelector } from "react-redux";
-// import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-import ScheduleIcon from "@material-ui/icons/Schedule";
-import { useSelector } from "react-redux";
-import { FavoriteType } from "../API/favourites";
-import CardComponent from "../Components/CardComponent";
-import { Fav } from "../state/store";
-import { FeedCard } from "../Styled/Components";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import PulseLoader from "react-spinners/PulseLoader";
+
+import { FavoriteType, getFavorites } from "../API/favourites";
+import FeedComponent from "../Components/FeedComponent";
+import { setFavs } from "../state/slice/favSlice";
+import { Fav, User } from "../state/store";
 
 function FavView() {
-	const favData = useSelector(Fav).favStore;
-	// const userID = useSelector(User).uuid;
-	// const [favourites, setFavorites] = useState<FavoriteType[]>([]);
-	// useEffect(() => {
-	// 	(async () => {
-	// 		const data = await getFavorites(userID);
-	// 		setFavorites(data);
-	// 	})();
-	// }, []);
+	const [favData, setFavData] = useState<FavoriteType[]>(
+		useSelector(Fav).favStore,
+	);
+	const userID = useSelector(User).uuid;
+	const [loading, setLoading] = useState(true);
+	const dispatch = useDispatch();
 
+	useEffect(() => {
+		if (favData[0].image.url !== "www.google.com") setLoading(false);
+		if (favData[0].image.url === "www.google.com") {
+			(async () => {
+				const data = await getFavorites(userID);
+				setFavData(data);
+				dispatch(setFavs(data));
+				setLoading(false);
+			})();
+		}
+	}, [dispatch, userID, favData]);
+
+	if (loading) return <PulseLoader />;
+	if (favData.length < 1) return <h1>You haven&apos;t uploaded any cats :C</h1>;
 	return (
 		<>
-			{favData.map((fav: FavoriteType) => {
-				const date = new Date(fav.created_at);
+			{favData.map(({ created_at, image, id }: FavoriteType) => {
+				const date = new Date(created_at);
 				return (
-					<FeedCard key={fav.id}>
-						<CardComponent url={fav.image.url} id={fav.image.id} />
-						<div className="FavData__Container">
-							<ScheduleIcon />
-							<h3>
-								{date.getDate()}/{date.getMonth() + 1}/{date.getFullYear()}
-							</h3>
-						</div>
-					</FeedCard>
+					<FeedComponent
+						key={id}
+						url={image.url}
+						id={image.id}
+						favID={id}
+						date={date}
+					/>
 				);
 			})}
 		</>

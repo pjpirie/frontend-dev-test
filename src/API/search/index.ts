@@ -14,7 +14,7 @@ import { getVote, VoteData } from "../votes";
  */
 export const getCatData = async (pageNumber: number = 0) => {
 	const catReq = await fetch(
-		`https://api.thecatapi.com/v1/images/search?page=${pageNumber}&limit=20&order=desc`,
+		`https://api.thecatapi.com/v1/images/search?page=${pageNumber}&limit=3&order=desc`,
 		{
 			method: "GET",
 			headers: {
@@ -59,7 +59,7 @@ export const getCatData = async (pageNumber: number = 0) => {
  * @returns Promise<CatState[]>
  */
 export const getAccountCatData = async (userID: string) => {
-	const resData = await fetch(
+	const resData: CatState[] = await fetch(
 		`https://api.thecatapi.com/v1/images?sub_id${userID}&limit=50&order=desc`,
 		{
 			method: "GET",

@@ -1,5 +1,9 @@
 import styled from "@emotion/styled";
 
+/**
+ * App Wrapper Component
+ * @child: AppContainer<div>
+ * */
 export const AppContainer = styled.div`
 	padding-bottom: 2rem;
 	width: 100vw;
@@ -14,6 +18,10 @@ export const AppContainer = styled.div`
 	}
 `;
 
+/**
+ * Header/Navigation Content Container Component
+ * @child: AppHeader<header>
+ * */
 export const AppHeader = styled.header`
 	position: sticky;
 	top: 0rem;
@@ -56,6 +64,10 @@ export const AppHeader = styled.header`
 	}
 `;
 
+/**
+ * Main Content Container Component
+ * @child: AppMain<main>
+ * */
 export const AppMain = styled.main`
 	display: flex;
 	flex-wrap: wrap;
@@ -76,8 +88,12 @@ export const AppMain = styled.main`
 	}
 `;
 
+/**
+ * Button Component
+ * @child: Button<button>
+ * */
 export const Button = styled.button`
-	padding: 0.25rem 0.5rem;
+	padding: 0.5rem;
 	color: #1f1f1f;
 	background-color: rgbA(255, 255, 255, 0);
 	border: none;
@@ -112,6 +128,12 @@ export const Button = styled.button`
 		margin: 0;
 	}
 `;
+/**
+ * Feed Component
+ * @child: FeedCard<div>
+ * @child: CardControler<div>
+ * @child: CatCard<img>
+ * */
 
 export const FeedCard = styled.div`
 	box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.1);
@@ -122,7 +144,6 @@ export const FeedCard = styled.div`
 	min-width: 300px;
 	@media (max-width: 640px) {
 		width: auto;
-		height: fit-content;
 	}
 
 	@media (max-width: 380px) {
@@ -200,40 +221,11 @@ export const CatCard = styled.div<CatCardProps>`
 	}
 `;
 
-export const FavList = styled.ul`
-	display: flex;
-	flex-direction: column;
-	max-width: 300px;
-`;
-
-export const Favitem = styled.li`
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	max-width: 100%;
-	max-height: 100%;
-	margin: 0.5rem 0;
-	position: relative;
-
-	& img {
-		border-radius: 10px 10px 0 0;
-		width: 100%;
-	}
-
-	& .FavData__Container {
-		width: 100%;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		padding: 0.5rem;
-		background-color: #f5f5f5;
-		border-radius: 0 0 10px 10px;
-		border-top: 5px solid #ffd1bd;
-	}
-`;
-
-// Toast Component
+/**
+ * Toast Component
+ * @child: ToastContainer<div>
+ * @child: Toast<div>
+ * */
 
 export const ToastContainer = styled.div`
 	z-index: 9999;
@@ -284,7 +276,10 @@ export const Toast = styled.div`
 	}
 `;
 
-// Overlay Component
+/**
+ * Overlay Component
+ * @child: OverlayContainer<div>
+ * */
 
 export const OverlayContainer = styled.div`
 	width: 100%;
@@ -299,21 +294,47 @@ export const OverlayContainer = styled.div`
 	backdrop-filter: blur(0px);
 	opacity: 0;
 	&.active {
-		background: rgba(244, 94, 85, 0.2);
+		&.red {
+			background: rgba(244, 94, 85, 0.2);
+			& svg {
+				fill: rgba(244, 94, 85, 1);
+			}
+		}
+		&.green {
+			background: rgba(136, 245, 85, 0.2);
+			& svg {
+				fill: rgba(136, 245, 85, 1);
+			}
+		}
+		&.blue {
+			background: rgba(131, 121, 249, 0.2);
+			& svg {
+				fill: rgba(131, 121, 249, 1);
+			}
+		}
+		&.pink {
+			background: rgba(250, 144, 195, 0.2);
+			& svg {
+				fill: rgba(250, 144, 195, 1);
+			}
+		}
 		backdrop-filter: blur(5px);
 		transform: scale(1);
 		opacity: 1;
 		& svg {
-			animation: heart 500ms linear forwards;
+			animation: pulse 500ms linear forwards;
 		}
 	}
 	& svg {
 		opacity: 0;
-		color: #f45e55;
+		color: #000000;
 	}
 `;
 
-// Scrollbar Component
+/**
+ * Scrollbar Component
+ * @child: ScrollbarContainer<div>
+ * */
 
 export const ScrollbarContainer = styled.div`
 	position: fixed;

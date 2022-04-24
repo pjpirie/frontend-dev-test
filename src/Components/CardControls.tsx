@@ -1,21 +1,37 @@
-import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
-import { useSelector, useDispatch } from "react-redux";
-import { Button, CardControler } from "../Styled/Components";
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+
 import { submitVote } from "../API/votes";
-import { User } from "../state/store";
-import { removeCat } from "../state/slice/catSlice";
-import ToastType from "./toast/toastTypes";
+import { useOverlay } from "../Context";
+import { CatState, setVoteValue } from "../state/slice/catSlice";
 import { setToast } from "../state/slice/toastSlice";
+import { User } from "../state/store";
+import { Button, CardControler } from "../Styled/Components";
+import OverlayType from "./overlay/overlayTypes";
+import ToastType from "./toast/toastTypes";
 
 interface ControlProps {
 	id: string;
 	voteVal: number;
+	accountCatData?: {
+		catData: CatState[];
+		setCatData: Function;
+	};
 }
 
-function CardControls({ id, voteVal }: ControlProps) {
+function CardControls({ id, voteVal, accountCatData }: ControlProps) {
 	const userData = useSelector(User);
 	const dispatch = useDispatch();
+	const location: string = useLocation().pathname;
+	/**
+	 *	The following is to remove the "no-unused-vars" on the custom hook that
+	 *	returns reference to overlay state and setState.
+	 */
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [overlay, setOverlay] = useOverlay();
 
 	const handleVote = async (val: number) => {
 		if (id === (null || undefined) || val === (null || undefined)) {
@@ -24,8 +40,26 @@ function CardControls({ id, voteVal }: ControlProps) {
 			);
 		}
 		const data = await submitVote(id, val, userData.uuid);
-		dispatch(removeCat(id));
 		if (data.message === "SUCCESS") {
+			if (location !== "/upload")
+				dispatch(setVoteValue({ id, voteval: voteVal + (val === 0 ? -1 : 1) }));
+			if (location === "/upload") {
+				if (accountCatData) {
+					const { catData, setCatData } = accountCatData;
+					setCatData(
+						catData.map((item) => {
+							if (item.id === id) {
+								return {
+									...item,
+									voteVal: item.voteVal + (val === 0 ? -1 : 1),
+								};
+							}
+							return item;
+						}),
+					);
+				}
+			}
+
 			if (val === 1) {
 				dispatch(
 					setToast({
@@ -34,6 +68,8 @@ function CardControls({ id, voteVal }: ControlProps) {
 						duration: 2000,
 					}),
 				);
+
+				setOverlay(OverlayType.UPVOTE, 2000);
 			}
 			if (val === 0) {
 				dispatch(
@@ -43,16 +79,28 @@ function CardControls({ id, voteVal }: ControlProps) {
 						duration: 2000,
 					}),
 				);
+
+				setOverlay(OverlayType.DOWNVOTE, 2000);
 			}
-		} else {
+			return;
+		}
+		if (data.message === "VOTE_EXISTS") {
 			dispatch(
 				setToast({
 					type: ToastType.ERROR,
-					message: "Vote Failed",
-					duration: 5000,
+					message: "Already Voted on that cat",
+					duration: 2000,
 				}),
 			);
+			return;
 		}
+		dispatch(
+			setToast({
+				type: ToastType.ERROR,
+				message: "Vote Failed",
+				duration: 5000,
+			}),
+		);
 	};
 
 	return (
@@ -69,3 +117,7 @@ function CardControls({ id, voteVal }: ControlProps) {
 }
 
 export default CardControls;
+
+CardControls.defaultProps = {
+	accountCatData: undefined,
+};

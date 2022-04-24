@@ -74,15 +74,15 @@ export const addFavorite = async (catID: string, userID: string) => {
  * @example removeFavorite("favourite-id");
  * @throws throws an error if the parameters are not provided
  * @throws throws an error if the request fails
- * @returns none
+ * @returns Promise<Responce | Error>
  */
-export const removeFavorite = (favID: string) => {
+export const removeFavorite = async (favID: string) => {
 	// Data Validations
 	if (favID === (null || undefined))
 		throw new Error("favorite id is required to remove a favorite");
 
 	// API Request
-	fetch(`https://api.thecatapi.com/v1/favourites/${favID}`, {
+	const req = await fetch(`https://api.thecatapi.com/v1/favourites/${favID}`, {
 		method: "DELETE",
 		headers: {
 			"Content-Type": "application/json",
@@ -90,6 +90,7 @@ export const removeFavorite = (favID: string) => {
 				import.meta.env.VITE_API_KEY || "4a989167-9038-43f6-89c7-9fb0956bd2ab",
 		},
 	}).catch((err) => new Error(err));
+	return req;
 };
 
 /**

@@ -26,6 +26,13 @@
 		"react/react-in-jsx-scope": "off",
 		"react/jsx-props-no-spreading": "off",
 		"no-shadow": "off",
-		"react/no-array-index-key": "off"
+		"react/no-array-index-key": "off",
+		"no-param-reassign": [
+			"error",
+			{
+				"props": true,
+				"ignorePropertyModificationsFor": ["state", "stateItem"]
+			}
+		]
 	}
 }
