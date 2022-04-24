@@ -101,26 +101,19 @@ export const Button = styled.button`
 	margin: 1rem 0;
 	background-color: #ffffff;
 	transition: background 0.2s ease-in-out;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	&.active {
 		background-color: #5d686b;
 
 		& svg {
 			fill: #ffffff;
-			display: flex;
-			justify-content: center;
-			align-items: center;
 		}
 	}
 	&:hover {
 		background-color: #5d686b;
 		cursor: pointer;
-
-		& svg {
-			fill: #ffffff;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
 	}
 
 	&.reset {
@@ -232,10 +225,14 @@ export const ToastContainer = styled.div`
 	position: absolute;
 	width: 100%;
 	height: 100%;
+	padding: 0 1rem;
+	right: 0;
+	max-width: 340px;
 	transform: scaleX(0);
 	opacity: 0;
 	transition: all 0.5s ease-in-out;
 	transform-origin: right;
+	pointer-events: none;
 
 	&.active {
 		transform: scaleX(1);
@@ -247,15 +244,24 @@ export const Toast = styled.div`
 	display: flex;
 	position: sticky;
 	margin-left: auto;
-	top: 2rem;
+	top: 11vh;
 	height: auto;
-	max-width: 340px;
 	width: 100%;
 	flex-direction: column;
 	background: #ffffff;
 	border-radius: 0.5rem;
 	box-shadow: 0 2px 0.5rem 0 rgba(0, 0, 0, 0.2);
 	padding: 1rem;
+	pointer-events: all;
+
+	& button {
+		padding: 0.25rem;
+		margin: 0px;
+		&:hover {
+			color: #ffffff;
+		}
+	}
+
 	& .toast-header {
 		display: flex;
 		justify-content: space-between;
@@ -316,6 +322,12 @@ export const OverlayContainer = styled.div`
 			background: rgba(250, 144, 195, 0.2);
 			& svg {
 				fill: rgba(250, 144, 195, 1);
+			}
+		}
+		&.yellow {
+			background: rgba(250, 245, 144, 0.2);
+			& svg {
+				fill: rgba(250, 245, 144, 1);
 			}
 		}
 		backdrop-filter: blur(5px);

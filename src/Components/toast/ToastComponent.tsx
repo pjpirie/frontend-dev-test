@@ -63,7 +63,6 @@ export default function ToastComponent() {
 						{getErrorData().type}
 					</strong>
 					<Button
-						className="reset"
 						onClick={() =>
 							dispatch(setToast({ type: ToastType.NONE, message: "" }))
 						}

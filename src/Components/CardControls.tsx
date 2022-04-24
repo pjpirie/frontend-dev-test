@@ -39,6 +39,8 @@ function CardControls({ id, voteVal, accountCatData }: ControlProps) {
 				"Voting Requires 2 Parameters: image_id: string, voteValue: number",
 			);
 		}
+		if (val === 1) setOverlay(OverlayType.UPVOTE, 2000);
+		if (val === 0) setOverlay(OverlayType.DOWNVOTE, 2000);
 		const data = await submitVote(id, val, userData.uuid);
 		if (data.message === "SUCCESS") {
 			if (location !== "/upload")
@@ -68,8 +70,6 @@ function CardControls({ id, voteVal, accountCatData }: ControlProps) {
 						duration: 2000,
 					}),
 				);
-
-				setOverlay(OverlayType.UPVOTE, 2000);
 			}
 			if (val === 0) {
 				dispatch(
@@ -79,8 +79,6 @@ function CardControls({ id, voteVal, accountCatData }: ControlProps) {
 						duration: 2000,
 					}),
 				);
-
-				setOverlay(OverlayType.DOWNVOTE, 2000);
 			}
 			return;
 		}
@@ -92,6 +90,7 @@ function CardControls({ id, voteVal, accountCatData }: ControlProps) {
 					duration: 2000,
 				}),
 			);
+			setOverlay(OverlayType.WARNING, 3000);
 			return;
 		}
 		dispatch(
@@ -101,6 +100,7 @@ function CardControls({ id, voteVal, accountCatData }: ControlProps) {
 				duration: 5000,
 			}),
 		);
+		setOverlay(OverlayType.ERROR, 3000);
 	};
 
 	return (
