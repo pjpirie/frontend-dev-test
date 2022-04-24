@@ -33,6 +33,34 @@ function CardControls({ id, voteVal, accountCatData }: ControlProps) {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [overlay, setOverlay] = useOverlay();
 
+	const changeLocalVoteValue = (val: number, isNewVote: boolean = true) => {
+		const voteIncrement = isNewVote ? 1 : 2;
+		if (location !== "/upload")
+			dispatch(
+				setVoteValue({
+					id,
+					voteval: voteVal + (val === 0 ? -voteIncrement : voteIncrement),
+				}),
+			);
+		if (location === "/upload") {
+			if (accountCatData) {
+				const { catData, setCatData } = accountCatData;
+				setCatData(
+					catData.map((item) => {
+						if (item.id === id) {
+							return {
+								...item,
+								voteVal:
+									item.voteVal + (val === 0 ? -voteIncrement : voteIncrement),
+							};
+						}
+						return item;
+					}),
+				);
+			}
+		}
+	};
+
 	const handleVote = async (val: number) => {
 		if (id === (null || undefined) || val === (null || undefined)) {
 			throw new Error(
@@ -43,43 +71,27 @@ function CardControls({ id, voteVal, accountCatData }: ControlProps) {
 		if (val === 0) setOverlay(OverlayType.DOWNVOTE, 2000);
 		const data = await submitVote(id, val, userData.uuid);
 		if (data.message === "SUCCESS") {
-			if (location !== "/upload")
-				dispatch(setVoteValue({ id, voteval: voteVal + (val === 0 ? -1 : 1) }));
-			if (location === "/upload") {
-				if (accountCatData) {
-					const { catData, setCatData } = accountCatData;
-					setCatData(
-						catData.map((item) => {
-							if (item.id === id) {
-								return {
-									...item,
-									voteVal: item.voteVal + (val === 0 ? -1 : 1),
-								};
-							}
-							return item;
-						}),
-					);
-				}
-			}
+			changeLocalVoteValue(val);
 
-			if (val === 1) {
-				dispatch(
-					setToast({
-						type: ToastType.UPVOTE,
-						message: "Vote Submitted",
-						duration: 2000,
-					}),
-				);
-			}
-			if (val === 0) {
-				dispatch(
-					setToast({
-						type: ToastType.DOWNVOTE,
-						message: "Vote Submitted",
-						duration: 2000,
-					}),
-				);
-			}
+			dispatch(
+				setToast({
+					type: val > 0 ? ToastType.UPVOTE : ToastType.DOWNVOTE,
+					message: "Vote Submitted",
+					duration: 2000,
+				}),
+			);
+			return;
+		}
+		if (data.message === "VOTE_CHANGED") {
+			changeLocalVoteValue(val, false);
+			dispatch(
+				setToast({
+					type: val > 0 ? ToastType.UPVOTE : ToastType.DOWNVOTE,
+					message: "Vote Changed",
+					duration: 2000,
+				}),
+			);
+			setOverlay(val > 0 ? OverlayType.UPVOTE : OverlayType.DOWNVOTE, 2000);
 			return;
 		}
 		if (data.message === "VOTE_EXISTS") {

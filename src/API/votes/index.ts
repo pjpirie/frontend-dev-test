@@ -68,18 +68,23 @@ export const submitVote = async (
 			"voteValue must be between 0 or 1, 0 = down vote, 1 = up vote",
 		);
 	const votes = await getVote(userID);
-	const targetVote = votes.filter((item) => {
+	const userVotes = votes.filter((item) => {
 		if (item.image_id === catID) {
-			if (item.sub_id === userID && item.value === voteValue) {
+			if (item.sub_id === userID) {
 				return true;
 			}
 		}
 		return false;
 	});
-	if (targetVote.length > 0) return { message: "VOTE_EXISTS" };
+	let message: { message: string } | undefined;
+
+	if (userVotes.length > 0) {
+		if (userVotes[0].value === voteValue) return { message: "VOTE_EXISTS" };
+		if (userVotes[0].value !== voteValue) message = { message: "VOTE_CHANGED" };
+	}
 
 	// API Request
-	const data = await fetch(`https://api.thecatapi.com/v1/votes`, {
+	const req = await fetch(`https://api.thecatapi.com/v1/votes`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -93,7 +98,15 @@ export const submitVote = async (
 		}),
 	})
 		.then((res) => res.json())
+		.then((data) => {
+			if (message === undefined) {
+				return data;
+			}
+			const responce = data;
+			responce.message = message.message;
+			return responce;
+		})
 		.catch((err) => new Error(err));
 
-	return data;
+	return req;
 };

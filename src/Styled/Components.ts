@@ -166,9 +166,6 @@ export const CardControler = styled.div`
 	& h1 {
 		padding: 0.5rem 1rem;
 	}
-	@media (max-width: 640px) {
-		height: auto;
-	}
 `;
 
 export const CatCard = styled.div<CatCardProps>`
@@ -180,7 +177,6 @@ export const CatCard = styled.div<CatCardProps>`
 	overflow: hidden;
 	@media (max-width: 640px) {
 		width: 300px;
-		height: auto;
 	}
 	& img {
 		height: 100%;
@@ -188,7 +184,6 @@ export const CatCard = styled.div<CatCardProps>`
 		object-fit: cover;
 		@media (max-width: 640px) {
 			width: 100%;
-			height: auto;
 		}
 	}
 	&.fav {
@@ -254,6 +249,10 @@ export const Toast = styled.div`
 	padding: 1rem;
 	pointer-events: all;
 
+	@media (max-width: 640px) {
+		top: 2vh;
+	}
+
 	& button {
 		padding: 0.25rem;
 		margin: 0px;
@@ -295,7 +294,6 @@ export const OverlayContainer = styled.div`
 	justify-content: center;
 	align-items: center;
 	transition: all 200ms ease-in-out;
-	// transform: scaleX(0);
 	transform-origin: center;
 	backdrop-filter: blur(0px);
 	opacity: 0;
