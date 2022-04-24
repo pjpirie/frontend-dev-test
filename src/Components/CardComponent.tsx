@@ -7,7 +7,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 
 import { addFavorite, removeFavorite } from "../API/favourites";
-import { addFav, setFavs } from "../state/slice/favSlice";
+import { addFav, removeFav } from "../state/slice/favSlice";
 import { setToast } from "../state/slice/toastSlice";
 import { Fav, User } from "../state/store";
 import { CatCard } from "../Styled/Components";
@@ -54,6 +54,9 @@ export default function CardComponent(props: CardProps) {
 						duration: 2000,
 					}),
 				);
+				setTimeout(() => {
+					dispatch(removeFav(favoriteId));
+				}, 2000);
 			}
 			// Error Handlind
 			if (data.status !== 200) {
@@ -64,8 +67,8 @@ export default function CardComponent(props: CardProps) {
 						duration: 5000,
 					}),
 				);
+				setFavorite(true);
 			}
-			dispatch(setFavs(favData.filter((item: any) => item.image_id !== id)));
 			return;
 		}
 		const data = await addFavorite(id, userData.uuid);

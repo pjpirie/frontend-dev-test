@@ -24,12 +24,17 @@ export const favSlice = createSlice({
 		addFav: (state, action: PayloadAction<FavoriteType>) => {
 			state.favStore = [...state.favStore, action.payload];
 		},
+		removeFav: (state, action: PayloadAction<string>) => {
+			state.favStore = state.favStore.filter((item) => {
+				return item.id !== action.payload;
+			});
+		},
 		setFavs: (state, action: PayloadAction<FavoriteType[]>) => {
 			state.favStore = action.payload;
 		},
 	},
 });
 
-export const { addFav, setFavs } = favSlice.actions;
+export const { addFav, setFavs, removeFav } = favSlice.actions;
 
 export default favSlice.reducer;
