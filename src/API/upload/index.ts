@@ -2,6 +2,8 @@ export interface UploadResponce {
 	id: string;
 	sub_id: string;
 	url: string;
+	message?: string;
+	status?: number;
 }
 
 /**

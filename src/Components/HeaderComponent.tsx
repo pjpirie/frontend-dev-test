@@ -42,7 +42,18 @@ function HeaderComponent() {
 			dispatch(
 				setToast({ type: ToastType.SUCCESS, message: "Upload successful." }),
 			);
+			return;
 		}
+		if (upload.status === 400) {
+			dispatch(
+				setToast({
+					type: ToastType.ERROR,
+					message: upload.message ? upload.message : "Upload failed.",
+				}),
+			);
+			return;
+		}
+		dispatch(setToast({ type: ToastType.ERROR, message: "Upload Failed." }));
 	};
 
 	const getActiveLink = (url: string) => {
