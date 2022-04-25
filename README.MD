@@ -40,4 +40,4 @@ If you encounter any problems or bugs, please contact the author:
 
 Contributors names and contact info
 
-> [@pjpirie](https://twitter.com/pjpirie)
+> Paul Pirie - [@pjpirie](https://twitter.com/pjpirie)
