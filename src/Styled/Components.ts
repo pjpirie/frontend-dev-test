@@ -84,7 +84,7 @@ export const AppMain = styled.main`
 		flex-direction: column;
 		justify-content: start;
 		align-items: center;
-		padding: 1rem 2rem 10vh;
+		padding: 2rem 2rem 10vh;
 	}
 `;
 
@@ -371,5 +371,24 @@ export const ScrollbarContainer = styled.div`
 		background: linear-gradient(to top, #008aff, #00ffe7);
 		border-radius: 50px 0 0 50px;
 		z-index: 981;
+	}
+`;
+
+/*
+ * Footer Author Tag styles
+ * @modifies: #author__tag
+ */
+
+export const AuthorTag = styled.h4`
+	position: absolute;
+	bottom: 0;
+	width: 100vw;
+	text-align: center;
+	padding: 0.25rem;
+	font-family: monospace;
+
+	@media (max-width: 640px) {
+		bottom: unset;
+		top: 0;
 	}
 `;

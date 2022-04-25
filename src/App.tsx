@@ -9,7 +9,7 @@ import HeaderComponent from "./Components/HeaderComponent";
 import CustomScrollbar from "./Components/ScrollbarComponent";
 import ToastComponent from "./Components/toast/ToastComponent";
 import { CatState, setCats } from "./state/slice/catSlice";
-import { AppContainer, AppMain } from "./Styled/Components";
+import { AppContainer, AppMain, AuthorTag } from "./Styled/Components";
 import AccountView from "./Views/Account.view";
 import FavView from "./Views/Fav.view";
 import MainView from "./Views/Main.view";
@@ -38,6 +38,7 @@ function App() {
 					<Route path="/upload" element={<AccountView />} />
 				</Routes>
 			</AppMain>
+			<AuthorTag>Built By Paul Pirie</AuthorTag>
 		</AppContainer>
 	);
 }
