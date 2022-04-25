@@ -1,4 +1,10 @@
-import { createContext, useCallback, useContext, useState } from "react";
+import {
+	createContext,
+	useCallback,
+	useContext,
+	useRef,
+	useState,
+} from "react";
 import OverlayType from "../Components/overlay/overlayTypes";
 
 interface OverlayContextType {
@@ -17,17 +23,22 @@ export const useOverlay = (): [OverlayContextType, Function] => {
 };
 
 export default function ContextHandler({ children }: any) {
+	const timerID = useRef<any>(0);
 	const [overlayData, setOverlayData] = useState({
 		type: OverlayType.NONE,
 		delay: 0,
 	});
 
 	const setOverlay = useCallback((type: OverlayType, delay: number) => {
-		setTimeout(() => {
+		if (timerID.current !== 0) {
+			clearTimeout(timerID.current);
+		}
+		timerID.current = setTimeout(() => {
 			setOverlayData({
 				type: OverlayType.NONE,
 				delay: 0,
 			});
+			timerID.current = 0;
 		}, delay);
 		setOverlayData({
 			type,

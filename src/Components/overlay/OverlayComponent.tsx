@@ -1,12 +1,12 @@
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import CloseIcon from "@material-ui/icons/Close";
 import BlockIcon from "@material-ui/icons/Block";
+import CloseIcon from "@material-ui/icons/Close";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 
+import { useOverlay } from "../../Context/index";
 import { OverlayContainer } from "../../Styled/Components";
 import OverlayType from "./overlayTypes";
-import { useOverlay } from "../../Context/index";
 
 const getOverlayData = (data: OverlayType) => {
 	switch (data) {

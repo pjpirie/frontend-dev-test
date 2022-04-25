@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 import { FavoriteType } from "../../API/favourites";
 
 export interface FavStore {

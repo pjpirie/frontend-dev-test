@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
+
 import { ScrollbarContainer } from "../Styled/Components";
 
 export default function CustomScrollbar() {

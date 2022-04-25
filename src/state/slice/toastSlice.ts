@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 import ToastType from "../../Components/toast/toastTypes";
 
 export interface ToastState {

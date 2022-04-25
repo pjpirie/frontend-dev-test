@@ -1,14 +1,16 @@
-import { useLocation, NavLink } from "react-router-dom";
-import PetsIcon from "@material-ui/icons/Pets";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import PhotoIcon from "@material-ui/icons/Photo";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppHeader, Button } from "../Styled/Components";
+import { NavLink, useLocation } from "react-router-dom";
+
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import PetsIcon from "@material-ui/icons/Pets";
+import PhotoIcon from "@material-ui/icons/Photo";
+
 import { uploadCat, UploadResponce } from "../API/upload";
-import { User } from "../state/store";
 import { setToast } from "../state/slice/toastSlice";
+import { User } from "../state/store";
+import { AppHeader, Button } from "../Styled/Components";
 import ToastType from "./toast/toastTypes";
 
 function HeaderComponent() {

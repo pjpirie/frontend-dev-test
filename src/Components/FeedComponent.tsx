@@ -1,4 +1,5 @@
 import ScheduleIcon from "@material-ui/icons/Schedule";
+
 import ContextHandler from "../Context";
 import { CatState } from "../state/slice/catSlice";
 import { FeedCard } from "../Styled/Components";

@@ -7,6 +7,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 
 import { addFavorite, removeFavorite } from "../API/favourites";
+import { useOverlay } from "../Context";
 import { addFav, removeFav } from "../state/slice/favSlice";
 import { setToast } from "../state/slice/toastSlice";
 import { Fav, User } from "../state/store";
@@ -14,7 +15,6 @@ import { CatCard } from "../Styled/Components";
 import Overlay from "./overlay/OverlayComponent";
 import OverlayType from "./overlay/overlayTypes";
 import ToastType from "./toast/toastTypes";
-import { useOverlay } from "../Context";
 
 interface CardProps {
 	url: string;
