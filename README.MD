@@ -1,4 +1,4 @@
-# Waracle Developer Test (CAT API).
+# Frontend Developer Test (CAT API).
 
 [Live Demo](https://waracle.paulpirie.com/)
 
